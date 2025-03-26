@@ -13,12 +13,15 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
+#include <stdio.h>
 #include <isa.h>
 #include <cpu/cpu.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
 #include <stdlib.h>
+#include <memory/vaddr.h>
+
 static int is_batch_mode = false;
 
 void init_regex();
@@ -75,6 +78,23 @@ static int cmd_info(char *args) {
   return 0;
 }
 
+static int cmd_x(char *args) {
+/* MYDO:扫描内存 */
+  char *num_str, *addr_str;
+  num_str = strtok(args, " ");
+  addr_str = strtok(NULL, " ");	 //字符截取
+
+  unsigned int num;
+  num = atoi(num_str);
+  paddr_t addr;
+  sscanf(addr_str, "%x", &addr);  //类型转换
+  for(int i = 0; i < num; i++) {
+	printf("%#x	%#x\n", addr, vaddr_read(addr, 4));	//虚存扫描
+	addr += 4;
+  }
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -89,6 +109,7 @@ static struct {
   /* TODO: Add more commands */
   { "si", "Step by step", cmd_si },
   { "info", "print regs' value", cmd_info },
+  { "x", "scan memory", cmd_x },
 
 };
 
