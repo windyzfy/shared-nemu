@@ -24,6 +24,14 @@ const char *regs[] = {
 };
 
 void isa_reg_display() {
+  /* MYDO:根据cpu中的gpr数组与regs[]输出对应寄存器值 */
+  //index: isa.h & def-isa.h
+  //统计字符串数组长度 
+  int num = sizeof(regs)/sizeof(regs[0]);
+  for(int i = 0 ; i < num ; i++) {
+	printf("%s	%#x	%d\n", regs[i] , cpu.gpr[i], cpu.gpr[i]);
+  }
+  return ;
 }
 
 word_t isa_reg_str2val(const char *s, bool *success) {

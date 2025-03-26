@@ -65,6 +65,16 @@ static int cmd_si(char *args) {
   return 0;
 }
 
+static int cmd_info(char *args) {
+/* MYDO: 打印寄存器值 %s  %#x  %d */
+  if(args == NULL)
+	printf("please add 'r'\n");
+  else {
+	isa_reg_display();	//index: isa.h
+  }
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -78,6 +88,7 @@ static struct {
 
   /* TODO: Add more commands */
   { "si", "Step by step", cmd_si },
+  { "info", "print regs' value", cmd_info },
 
 };
 
