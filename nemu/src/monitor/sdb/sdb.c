@@ -18,7 +18,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
-
+#include <stdlib.h>
 static int is_batch_mode = false;
 
 void init_regex();
@@ -49,8 +49,20 @@ static int cmd_c(char *args) {
 
 
 static int cmd_q(char *args) {
+/* MYDO:优美地退出 */
   nemu_state.state = NEMU_QUIT;
   return -1;
+}
+
+static int cmd_si(char *args) {
+/* MYDO:单步执行 */
+  int num;
+  if(args == NULL)
+	num = 1;		//缺省为1
+  else
+ 	num = atoi(args);	//字符转数字
+  cpu_exec(num);
+  return 0;
 }
 
 static int cmd_help(char *args);
@@ -65,6 +77,7 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
 
   /* TODO: Add more commands */
+  { "si", "Step by step", cmd_si },
 
 };
 
